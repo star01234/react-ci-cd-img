@@ -22,6 +22,10 @@ jobs:
         run: echo "Using TAG_NAME=${{ env.TAG_NAME }}"
 
       - name: Build and push Docker image
-        run: |
-          docker buildx create --use  # Enable buildx for multi-platform builds
-          docker buildx build --push --tag ghcr.io/star01234/react-ci-cd-img:${{ env.TAG_NAME }} .
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: react-ci-cd
+          registry: ghcr.io/star01234
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          tags: ${{ env.TAG_NAME }}
